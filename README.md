@@ -1,6 +1,6 @@
 # Packages
 
-Add the following to your `/etc/pacman.conf` for adding the `rebornos-labs` repository:
+Add the following to your `/etc/pacman.conf` for adding the `rebornos-labs` repository: 
 
 ```ini
 [rebornos-labs]
