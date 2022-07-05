@@ -11,6 +11,11 @@ PWD="$(pwd)"
 SCRIPT_DIRECTORY="$(dirname -- "$(readlink -f -- "$0")")"
 PROJECT_DIRECTORY="$(dirname -- "$SCRIPT_DIRECTORY")"
 
+REPO_PATH="$(readlink -f -- "$1")"
+shift
+
+REPO_DIRECTORY="$(dirname -- "$REPO_PATH")"
+
 # Create the repo directory if it does not exist
 set -o xtrace
 sudo mkdir -p "$REPO_DIRECTORY"
@@ -68,7 +73,8 @@ for package_name in "$@"; do
                 echo "Package: $package_name, BUILT: v$GIVEN_VERSION, REPO: v$REPO_VERSION"
                 set -o xtrace
                 cp "$package_name"*.pkg* "$REPO_DIRECTORY" \
-                && package_files="$package_files "$(ls -t "$REPO_DIRECTORY/$package_name"*.pkg* | head -n 1)
+                && cd "$REPO_DIRECTORY" \
+                && package_files="$package_files ""$(ls -t "$package_name"*.pkg* | head -n 1)"
                 set +o xtrace
                 if [ "$?" -ne 0 ]; then
                     set -o xtrace
@@ -82,8 +88,8 @@ done
 
 if [ ! -z "$package_files" ]; then 
     set -o xtrace
-    package_files=$(echo "$package_files" | xargs)
-    echo "$package_files" | xargs repo-add -R -n "$REPO_DIRECTORY/$REPO_NAME.$REPO_EXTENSION"    
+    package_files="$(echo "$package_files" | xargs)"
+    echo "$package_files" | xargs repo-add -R -n "$REPO_PATH"    
     set +o xtrace 
 
     echo ""
