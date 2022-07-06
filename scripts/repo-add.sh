@@ -34,6 +34,8 @@ fi
 
 package_files=""
 for package_name in "$@"; do
+    cd "$BUILD_DIRECTORY"
+
     if [ -f "$package_name" ]; then
         package_path="$package_name"
         package_name=$(basename "$package_path")
