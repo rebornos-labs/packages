@@ -68,7 +68,7 @@ for package_name in "$@"; do
             set -o xtrace
             yay --getpkgbuild --force "aur/$package_name" \
             && cd "$package_name" \
-            && makepkg --force --syncdeps --noconfirm \
+            && makepkg --force --nodeps --noconfirm \
             && GIVEN_VERSION=$(ls -t "$package_name"*.pkg* | head -n 1 | sed -rn "s/.*(\/)?$package_name-(.*)-.*\.pkg\..*/\2/p")
             set +o xtrace
             if [ "$GIVEN_VERSION" != "$REPO_VERSION" ]; then
